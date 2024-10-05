@@ -17,5 +17,5 @@ else
 fi
 
 cd $EXEC_PATH
-sudo ./template
+sudo ./lingos_passer
 cd ../..

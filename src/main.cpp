@@ -1,6 +1,11 @@
-#include <iostream>
+#include "CurlHandler.h"
+
+// Funkcja callback do zapisywania odpowiedzi serwera
 
 int main() 
 {
-    std::cout << "dupa" << std::endl;
+    CurlHandler curl;
+    std::string dupa = curl.GetQuestion();
+    std::cout << dupa << std::endl;
+    curl.SendAnswer();
 }

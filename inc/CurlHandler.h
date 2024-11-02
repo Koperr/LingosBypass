@@ -10,28 +10,32 @@ using json = nlohmann::json;
 class CurlHandler
 {
 public:
-    std::map<std::string, std::string> m = 
+    CurlHandler(const std::string& autologin, const std::string& cookie_consent, const std::string& lingos_sid, const std::string& quiz_id, const std::string& file_to_get_answer_from, const std::string& file_to_send_answer_to)
     {
-        {"Oglądałem zachód słońca", "i watched the sunset"}, //1
-        {"miejsca historyczne", "historical sites"}, //2
-        {"godziny otwarcia", "opening hours"}, //3
-        {"przewodnik (osoba)", "guide"}, //4
-        {"Jak tam wakacje?", "how was your holiday"}, //5
-        {"rezerwować bilet", "book a ticket"}, //6
-        {"zachód słońca", "sunset"}, //7
-        {"dom wczasowy, kurort", "holiday resort"}, //8
-        {"atrakcyjny", "attractive"}, //9
-        {"przewodnik (książka)", "guidebook"}, //10
-        {"wycieczka rowerowa", "bike trip"}, //11
-        {"Jakie są godziny otwarcia?", "what are the opening hours"}, //12
-        {"obniżka", "discount"}, //13
-        {"atrakcja turystyczna", "tourist attraction"} //14
-    };
+        this->autologin = autologin;
+        this->cookie_consent = cookie_consent;
+        this->lingos_sid = lingos_sid;
 
+        this->quiz_id = quiz_id;
+        this->file_to_get_answer_from = file_to_get_answer_from;
+        this->file_to_send_answer_to = file_to_send_answer_to;
+    }
+
+    json GetData();
     std::string GetQuestion();
+
     void SendAnswer();
 
 private:
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s);
 
+    json ParseData(const std::string& input);
+
+    std::string autologin;
+    std::string cookie_consent;
+    std::string lingos_sid;
+
+    std::string quiz_id;
+    std::string file_to_get_answer_from;
+    std::string file_to_send_answer_to;
 };

@@ -47,6 +47,14 @@ json CurlHandler::ParseData(const std::string& input)
     return j;
 }
 
+void CurlHandler::SetUserAgent(const std::string &user_agent){this->user_agent = "User-Agent: " + (std::string)"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0";}
+void CurlHandler::SetAutoLogin(const std::string &autologin) { this->autologin = autologin; }
+void CurlHandler::SetCookieConsent(const std::string &cookie_consent){this->cookie_consent = cookie_consent;}
+void CurlHandler::SetLingosSid(const std::string &lingos_sid){this->lingos_sid = lingos_sid;}
+void CurlHandler::SetTargetQuizID(const std::string &quiz_id){this->quiz_id = quiz_id;}
+void CurlHandler::SetQuiztoGetDataFrom(const std::string &file_name){quizes.push_back(file_name);}
+void CurlHandler::SetFileToSendAnswerTo(const std::string &file_name){this->file_to_send_answer_to = file_name;}
+
 json CurlHandler::GetData()
 {
     CURL* curl;
@@ -56,54 +64,66 @@ json CurlHandler::GetData()
     // Inicjalizacja cURL
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
+
+    json j;
     
     if (curl) {
-        // Ustawienie URL
-        std::string url = "https://lingos.pl/student-confirmed/wordset/" + this->quiz_id;
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        //for(auto id : quizes)
+        //{
+            // Ustawienie URL
+            std::string url = "https://lingos.pl/student-confirmed/wordset/";// + id;
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-        // Ustawienie metody na POST
-        //curl_easy_setopt(curl, CURLOPT_OPT, 1L);
+            // Ustawienie metody na POST
+            //curl_easy_setopt(curl, CURLOPT_OPT, 1L);
 
-        // Ustawienie nagłówków
-        struct curl_slist* headers = NULL;
-        headers = curl_slist_append(headers, "Cookie: lingos_sid=apq11l35ncc7kuenaksn8tbtic; CookieConsent={stamp:%27TsO3AumTL4vbA6x7SFNWH8xCGl/iufXUKlYDFRvUNa23DnIPEwDiAQ==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:false%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1727820297301%2Cregion:%27pl%27}; autologin=gWq2ipDOm2RbZopvz8fu5ZFaWPwk%2FH22sTKgGOorOxE%3D%3AieVM60bQBFMyroZsgXySFpk5MK%2Fs2F%2FDn9F5O5HyJW8%3D");
-        headers = curl_slist_append(headers, "Accept: application/json");
-        headers = curl_slist_append(headers, "User-Agent: Mozilla/5.0");
-        headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
-        
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+            // Ustawienie nagłówków
+            struct curl_slist* headers = NULL;
+            headers = curl_slist_append(headers, "Cookie: lingos_sid=apq11l35ncc7kuenaksn8tbtic; CookieConsent={stamp:%27TsO3AumTL4vbA6x7SFNWH8xCGl/iufXUKlYDFRvUNa23DnIPEwDiAQ==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:false%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1727820297301%2Cregion:%27pl%27}; autologin=gWq2ipDOm2RbZopvz8fu5ZFaWPwk%2FH22sTKgGOorOxE%3D%3AieVM60bQBFMyroZsgXySFpk5MK%2Fs2F%2FDn9F5O5HyJW8%3D");
+            headers = curl_slist_append(headers, "Accept: application/json");
+            headers = curl_slist_append(headers, "User-Agent: Mozilla/5.0");
+            headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
+            
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-        // Ustawienie timeout
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L); // 10 sekund
+            // Ustawienie timeout
+            curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L); // 10 sekund
 
-        // Ustawienie pustego ciała w zapytaniu POST
-        //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
+            // Ustawienie pustego ciała w zapytaniu POST
+            //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
 
-        // Callback do zapisywania odpowiedzi serwera
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+            // Callback do zapisywania odpowiedzi serwera
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
-        // Wysłanie żądania
-        res = curl_easy_perform(curl);
+            // Wysłanie żądania
+            res = curl_easy_perform(curl);
 
-        // Sprawdzenie odpowiedzi
-        if (res != CURLE_OK) {
-            std::cerr << "(GetData()) cURL error: " << curl_easy_strerror(res) << std::endl;
-        } else {
-            //std::cout << "Odpowiedź serwera: " << readBuffer << std::endl;
-        }
+            // Sprawdzenie odpowiedzi
+            if (res != CURLE_OK) {
+                std::cerr << "(GetData()) cURL error: " << curl_easy_strerror(res) << std::endl;
+            } else {
+                //std::cout << "Odpowiedź serwera: " << readBuffer << std::endl;
+            }
 
-        // Zwolnienie pamięci dla nagłówków
-        curl_slist_free_all(headers);
+            // Zwolnienie pamięci dla nagłówków
+            curl_slist_free_all(headers);
 
-        // Zakończenie cURL
-        curl_easy_cleanup(curl);
+            // Zakończenie cURL
+            curl_easy_cleanup(curl);
+            
+            j = ParseData(readBuffer);
+            //j.merge_patch(ParseData(readBuffer));  
+            //j += ParseData(readBuffer);
+     
+            curl_global_cleanup();
+            //}
     }
+        
 
-    curl_global_cleanup();
 
-    return ParseData(readBuffer);
+    return j;
+    //return ParseData(readBuffer);
 }
 
 std::string CurlHandler::GetQuestion()
@@ -195,6 +215,7 @@ void CurlHandler::SendAnswer()
 
         // Ustawienie nagłówków
         struct curl_slist *headers = NULL;
+        headers = curl_slist_append(headers, user_agent.c_str());
         headers = curl_slist_append(headers, "Accept: application/json");
         headers = curl_slist_append(headers, "Content-Type: application/json");
         headers = curl_slist_append(headers, cookies.c_str());

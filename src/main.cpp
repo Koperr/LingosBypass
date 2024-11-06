@@ -13,15 +13,16 @@ int main()
 
     curl.SetUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0");
     curl.SetAutoLogin("gWq2ipDOm2RbZopvz8fu5ZFaWPwk/H22sTKgGOorOxE=:ieVM60bQBFMyroZsgXySFpk5MK/s2F/Dn9F5O5HyJW8=");
-    curl.SetCookieConsent("{stamp:%27IK+s9jLGWfkel/gCAI5PWSw4frQP/y5j9niUxJ2CVKRp0RyxTecRqw==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1730840675733%2Cregion:%27pl%27}");
+    curl.SetCookieConsent("{stamp:'NOyfdedc0A8xsg/+F0xfZ1zkKJZKWsUO3fRLj4JPdHKguaQlyFI19w==',necessary:true,preferences:true,statistics:true,marketing:true,method:'explicit',ver:1,utc:1730923362440,region:'pl'}");
     curl.SetLingosSid("apq11l35ncc7kuenaksn8tbtic");
     curl.SetTargetQuizID("25503");
-    curl.SetQuiztoGetDataFrom("72148");
-    curl.SetQuiztoGetDataFrom("75101");
+    curl.SetQuiztoGetDataFrom("72148"); // wrzesien
+    curl.SetQuiztoGetDataFrom("75101"); // paxdziernik
 
     json j;
     j = curl.GetData();
     //std::cout << "dupa1\n";
+    std::cout << "dupa1\n";
     std::string question = curl.GetQuestion();
     std::cout << "question: " << question << std::endl;
     //std::cout << "dupa1\n";

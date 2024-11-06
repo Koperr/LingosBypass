@@ -8,6 +8,7 @@ size_t CurlHandler::WriteCallback(void *contents, size_t size, size_t nmemb, std
 
 json CurlHandler::ParseData(const std::string& input)
 {
+    std::cout << "RUNNING PARSEDATA\n";
     json j;
 
     size_t first_arg_start_pos = 0;
@@ -57,21 +58,23 @@ void CurlHandler::SetFileToSendAnswerTo(const std::string &file_name){this->file
 
 json CurlHandler::GetData()
 {
-    CURL* curl;
-    CURLcode res;
-    std::string readBuffer;
-
-    // Inicjalizacja cURL
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    curl = curl_easy_init();
+    std::cout << "RUNNING GETDATA\n";
 
     json j;
-    
-    if (curl) {
-        //for(auto id : quizes)
-        //{
+    for(auto id : quizes)
+    {
+        std::cout << "GET DATA FROM ID: " << id << std::endl;
+        CURL* curl;
+        CURLcode res;
+        std::string readBuffer;
+
+        // Inicjalizacja cURL
+        curl_global_init(CURL_GLOBAL_DEFAULT);
+        curl = curl_easy_init();
+        if (curl) 
+        {
             // Ustawienie URL
-            std::string url = "https://lingos.pl/student-confirmed/wordset/";// + id;
+            std::string url = "https://lingos.pl/student-confirmed/wordset/" + id;
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
             // Ustawienie metody na POST
@@ -111,23 +114,24 @@ json CurlHandler::GetData()
 
             // Zakończenie cURL
             curl_easy_cleanup(curl);
-            
             j = ParseData(readBuffer);
+            data.merge_patch(ParseData(readBuffer));
             //j.merge_patch(ParseData(readBuffer));  
             //j += ParseData(readBuffer);
      
             curl_global_cleanup();
-            //}
+            }
     }
         
 
 
-    return j;
+    return data;
     //return ParseData(readBuffer);
 }
 
 std::string CurlHandler::GetQuestion()
 {
+    std::cout << "RUNNING GETQUESTION\n";
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
@@ -138,7 +142,8 @@ std::string CurlHandler::GetQuestion()
     
     if (curl) {
         // Ustawienie URL
-        std::string url = "https://lingos.pl/s/exercise/0," + this->quiz_id + "," + this->file_to_get_answer_from;
+        //std::string url = "https://lingos.pl/s/exercise/0," + this->quiz_id + "," + this->file_to_get_answer_from;        // TODO
+        std::string url = "https://lingos.pl/s/exercise/0,0,25503";
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         //std::cout << "Sending GET request to URL: " << url << std::endl;
 
@@ -189,21 +194,20 @@ std::string CurlHandler::GetQuestion()
 
     json recieved_data = json::parse(readBuffer);
     std::string question = recieved_data["exercise"]["translation"];
-    std::cout << "GetQuestion() returned " << question << std::endl;
+    //std::cout << "GetQuestion() returned " << question << std::endl;
     return question;
 }
 
 void CurlHandler::SendAnswer()
 {
+    std::cout << "RUNNING SENDANSWER\n";
     CURL *curl;
     CURLcode res;
-
     // Ustawienia URL i dane odpowiedzi
     const std::string url = "https://lingos.pl/s/answer/" + this->file_to_send_answer_to;
     std::string cookies = "Cookie: lingos_sid=" + lingos_sid + "; CookieConsent=" + cookie_consent + "; autologin=" + autologin;
 
     json j = GetData();
-
     // Inicjalizacja cURL
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();

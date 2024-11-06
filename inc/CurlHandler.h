@@ -35,8 +35,10 @@ private:
     std::string lingos_sid;
 
     std::string quiz_id;
-    std::string file_to_get_answer_from;
+    std::string file_to_get_answer_from = "25503";
     std::string file_to_send_answer_to;
+
+    json data;
 
     std::vector<std::string> quizes;
 };

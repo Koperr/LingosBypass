@@ -17,15 +17,15 @@ public:
     void SetCookieConsent(const std::string& cookie_consent);
     void SetLingosSid(const std::string& lingos_sid);
     void SetTargetQuizID(const std::string& quiz_id);
-    void SetQuiztoGetDataFrom(const std::string& file_name);
-    void SetFileToSendAnswerTo(const std::string& file_name);
+    void SetWordSet(const std::string& file_name);
+    void SetAnswerDestination(const std::string& answer_destination);
 
     json GetData();
     std::string GetQuestion();
     void SendAnswer();
 
 private:
-    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s);
+    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp);
 
     json ParseData(const std::string& input);
 
@@ -36,7 +36,7 @@ private:
 
     std::string quiz_id;
     std::string file_to_get_answer_from = "25503";
-    std::string file_to_send_answer_to;
+    std::string answer_destination;
 
     json data;
 

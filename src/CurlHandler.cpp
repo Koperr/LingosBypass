@@ -1,11 +1,18 @@
 #include "CurlHandler.h"
 
-size_t CurlHandler::WriteCallback(void *contents, size_t size, size_t nmemb, std::string *s)
-{
-    s->append((char*)contents, size * nmemb);
-    return size * nmemb;
+size_t CurlHandler::WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp) {
+    size_t totalSize = size * nmemb;
+    std::string* response = static_cast<std::string*>(userp);
+    if (response == nullptr) {
+        return 0; // Brak miejsca na zapis
+    }
+    try {
+        response->append(static_cast<char*>(contents), totalSize);
+    } catch (...) {
+        return 0; // Zwróć 0 w przypadku błędu
+    }
+    return totalSize; // Ilość zapisanych bajtów
 }
-
 json CurlHandler::ParseData(const std::string& input)
 {
     std::cout << "RUNNING PARSEDATA\n";
@@ -53,8 +60,8 @@ void CurlHandler::SetAutoLogin(const std::string &autologin) { this->autologin =
 void CurlHandler::SetCookieConsent(const std::string &cookie_consent){this->cookie_consent = cookie_consent;}
 void CurlHandler::SetLingosSid(const std::string &lingos_sid){this->lingos_sid = lingos_sid;}
 void CurlHandler::SetTargetQuizID(const std::string &quiz_id){this->quiz_id = quiz_id;}
-void CurlHandler::SetQuiztoGetDataFrom(const std::string &file_name){quizes.push_back(file_name);}
-void CurlHandler::SetFileToSendAnswerTo(const std::string &file_name){this->file_to_send_answer_to = file_name;}
+void CurlHandler::SetWordSet(const std::string &file_name){quizes.push_back(file_name);}
+void CurlHandler::SetAnswerDestination(const std::string &file_name){this->answer_destination = file_name;}
 
 json CurlHandler::GetData()
 {
@@ -114,7 +121,7 @@ json CurlHandler::GetData()
 
             // Zakończenie cURL
             curl_easy_cleanup(curl);
-            j = ParseData(readBuffer);
+            //j = ParseData(readBuffer);
             data.merge_patch(ParseData(readBuffer));
             //j.merge_patch(ParseData(readBuffer));  
             //j += ParseData(readBuffer);
@@ -124,7 +131,7 @@ json CurlHandler::GetData()
     }
         
 
-
+    // return JSON with questions and translations
     return data;
     //return ParseData(readBuffer);
 }
@@ -200,14 +207,14 @@ std::string CurlHandler::GetQuestion()
 
 void CurlHandler::SendAnswer()
 {
+    std::cout << GetQuestion() << std::endl;
     std::cout << "RUNNING SENDANSWER\n";
     CURL *curl;
     CURLcode res;
     // Ustawienia URL i dane odpowiedzi
-    const std::string url = "https://lingos.pl/s/answer/" + this->file_to_send_answer_to;
+    const std::string url = "https://lingos.pl/s/answer/" + this->answer_destination;
     std::string cookies = "Cookie: lingos_sid=" + lingos_sid + "; CookieConsent=" + cookie_consent + "; autologin=" + autologin;
 
-    json j = GetData();
     // Inicjalizacja cURL
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
@@ -217,31 +224,65 @@ void CurlHandler::SendAnswer()
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_POST, 1L);
 
+        json jsonToSend = data[GetQuestion()];
+        std::string stringToSend = jsonToSend.dump();
+        std::cout << stringToSend << stringToSend.length() << std::endl;
+        json jjsonToSend = {    {"answer", stringToSend}    };
+        std::string test2 = jjsonToSend.dump();
+        test2 = "{\"answer\":" + stringToSend + "}";
+        //std::string temp = stringToSend;
+        //const char* test = temp.c_str(); + 11
+        //std::cout << sizeof(test);
         // Ustawienie nagłówków
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, user_agent.c_str());
-        headers = curl_slist_append(headers, "Accept: application/json");
+        std::string content_lenght = "Content-Length: " + std::to_string(stringToSend.length() + 11);
+        headers = curl_slist_append(headers, "Accept: application/json, text/javascript, */*; q=0.01");
+        headers = curl_slist_append(headers, "Accept-Encoding: gzip, deflate, br, zstd");
+        headers = curl_slist_append(headers, "Accept-Language: en-US,en;q=0.5");
+        headers = curl_slist_append(headers, "Connection: keep-alive");
+        //headers = curl_slist_append(headers, content_lenght.c_str()); //////////// mozliwe ze jest niepotrzebny
         headers = curl_slist_append(headers, "Content-Type: application/json");
+        //headers = curl_slist_append(headers, "Cookie: lingos_sid=apq11l35ncc7kuenaksn8tbtic; autologin=gWq2ipDOm2RbZopvz8fu5ZFaWPwk%2FH22sTKgGOorOxE%3D%3AieVM60bQBFMyroZsgXySFpk5MK%2Fs2F%2FDn9F5O5HyJW8%3D; CookieConsent={stamp:%27NOyfdedc0A8xsg/+F0xfZ1zkKJZKWsUO3fRLj4JPdHKguaQlyFI19w==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1730923362440%2Cregion:%27pl%27}");
+        headers = curl_slist_append(headers, "Host: lingos.pl");
+        headers = curl_slist_append(headers, "Origin: https://lingos.pl");
+        headers = curl_slist_append(headers, "Priority: u=0");
+        headers = curl_slist_append(headers, "Referer: https://lingos.pl/s/lesson/0,0,25503"); //////////////////
+        headers = curl_slist_append(headers, "Sec-Fetch-Dest: empty");
+        headers = curl_slist_append(headers, "Sec-Fetch-Mode: cors");
+        headers = curl_slist_append(headers, "Sec-Fetch-Site: same-origin");
+        headers = curl_slist_append(headers, "User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0");
+        headers = curl_slist_append(headers, "X-Requested-With: XMLHttpRequest");
         headers = curl_slist_append(headers, cookies.c_str());
+        //headers = curl_slist_append(headers, user_agent.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
+        //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
         // Ustawienie danych do wysłania
-        std::string jsonData = j.dump(); // Konwertowanie obiektu JSON na string
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.c_str());
-
+        //std::string jsonData = data.dump(); // Konwertowanie obiektu JSON na string
+        //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, stringToSend.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, test2.c_str());
         // Wykonanie zapytania
-        res = curl_easy_perform(curl);
+        
+        std::string response;
+        curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 
-        // Sprawdzanie błędów
-        if(res != CURLE_OK) {
+        res = curl_easy_perform(curl);
+        if (res == CURLE_OK) {
+            std::cout << "Response: " << response << std::endl;
+        } else {
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
         }
-
+        //else{
+        //    std::cout << "SEND [" << stringToSend << "] TO SERVER\n";
+        //}
         // Czyszczenie
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
     }
 
     curl_global_cleanup();
-
+    
 }

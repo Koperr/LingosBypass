@@ -16,21 +16,18 @@ int main()
     curl.SetCookieConsent("{stamp:'NOyfdedc0A8xsg/+F0xfZ1zkKJZKWsUO3fRLj4JPdHKguaQlyFI19w==',necessary:true,preferences:true,statistics:true,marketing:true,method:'explicit',ver:1,utc:1730923362440,region:'pl'}");
     curl.SetLingosSid("apq11l35ncc7kuenaksn8tbtic");
     curl.SetTargetQuizID("25503");
-    curl.SetQuiztoGetDataFrom("72148"); // wrzesien
-    curl.SetQuiztoGetDataFrom("75101"); // paxdziernik
+    curl.SetAnswerDestination("209618191");
+    curl.SetWordSet("72148"); // wrzesien
+    curl.SetWordSet("75101"); // paxdziernik
 
-    json j;
-    j = curl.GetData();
-    //std::cout << "dupa1\n";
-    std::cout << "dupa1\n";
-    std::string question = curl.GetQuestion();
-    std::cout << "question: " << question << std::endl;
-    //std::cout << "dupa1\n";
-    //std::string answer = j[curl.GetQuestion()];
+    // ParseData - gets string (html code), returns JSON with questions and translations (inside GetData func)
+    // GetData - return JSON with questions and translations from IDs set by SetWordSet()
+    // Get Question - returns current question (string)
 
-    //std::cout << "dupa2\n";
-    //std::cout << std::endl << "[" << question << "] ["<< answer << "]" << std::endl;
-    //std::cout << j.dump();
+    curl.GetData();
 
     curl.SendAnswer();
+
+    // TODO GetQuestion id pliku zmienic magic number
+    // TODO add the rest of the request headers to SendAnswer() 
 }

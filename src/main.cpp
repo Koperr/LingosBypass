@@ -4,30 +4,17 @@
 
 int main() 
 {
-    CurlHandler curl;//("gWq2ipDOm2RbZopvz8fu5ZFaWPwk/H22sTKgGOorOxE=:ieVM60bQBFMyroZsgXySFpk5MK/s2F/Dn9F5O5HyJW8=", 
-    //"{stamp:'TsO3AumTL4vbA6x7SFNWH8xCGl/iufXUKlYDFRvUNa23DnIPEwDiAQ==',necessary:true,preferences:false,statistics:false,marketing:false,method:'explicit',ver:1,utc:1727820297301,region:'pl'}",
-    //"apq11l35ncc7kuenaksn8tbtic",
-    //"75101", // quiz_id
-    //"25503", // file_to_get_answer_from
-    //"203568333"); // file_to_send_answer_to
+    CurlHandler curl("Cookie:	lingos_sid=apq11l35ncc7kuenaksn8tbtic; autologin=gWq2ipDOm2RbZopvz8fu5ZFaWPwk%2FH22sTKgGOorOxE%3D%3AieVM60bQBFMyroZsgXySFpk5MK%2Fs2F%2FDn9F5O5HyJW8%3D; CookieConsent={stamp:%27f+7ywpRuvGmFIujhI+oEbPugblwcsBmNcpD/7RUUNZKavIMY97rzhQ==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:false%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1745620490943%2Cregion:%27pl%27}");
 
-    curl.SetUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0");
-    curl.SetAutoLogin("gWq2ipDOm2RbZopvz8fu5ZFaWPwk/H22sTKgGOorOxE=:ieVM60bQBFMyroZsgXySFpk5MK/s2F/Dn9F5O5HyJW8=");
-    curl.SetCookieConsent("{stamp:'NOyfdedc0A8xsg/+F0xfZ1zkKJZKWsUO3fRLj4JPdHKguaQlyFI19w==',necessary:true,preferences:true,statistics:true,marketing:true,method:'explicit',ver:1,utc:1730923362440,region:'pl'}");
-    curl.SetLingosSid("apq11l35ncc7kuenaksn8tbtic");
-    curl.SetTargetQuizID("25503");
-    curl.SetAnswerDestination("209618191");
-    curl.SetWordSet("72148"); // wrzesien
-    curl.SetWordSet("75101"); // paxdziernik
+    curl.SetExercise("25503");
 
-    // ParseData - gets string (html code), returns JSON with questions and translations (inside GetData func)
-    // GetData - return JSON with questions and translations from IDs set by SetWordSet()
-    // Get Question - returns current question (string)
+    curl.AddWordSet("89624"); // employment Impulse 3
+    curl.GetQnA();
 
-    curl.GetData();
-
-    curl.SendAnswer();
-
-    // TODO GetQuestion id pliku zmienic magic number
-    // TODO add the rest of the request headers to SendAnswer() 
+    //std::cout << curl.QnA.dump();
+    for(int i = 0; i < 100; i++)
+    {
+        curl.GetCurrentQnAID();
+        curl.SendAnswer();
+    }
 }

@@ -11,34 +11,26 @@ using json = nlohmann::json;
 class CurlHandler
 {
 public:
+    CurlHandler(const std::string &cookies)
+        : cookies(cookies) {}
 
-    void SetUserAgent(const std::string& user_agent);
-    void SetAutoLogin(const std::string& autologin);
-    void SetCookieConsent(const std::string& cookie_consent);
-    void SetLingosSid(const std::string& lingos_sid);
-    void SetTargetQuizID(const std::string& quiz_id);
-    void SetWordSet(const std::string& file_name);
-    void SetAnswerDestination(const std::string& answer_destination);
+    void SetExercise(const std::string& id);
+    void AddWordSet(const std::string& id);
 
-    json GetData();
-    std::string GetQuestion();
+    void GetQnA();
+    void GetCurrentQnAID();
     void SendAnswer();
 
+    json QnA;
 private:
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp);
 
     json ParseData(const std::string& input);
 
-    std::string user_agent;
-    std::string autologin;
-    std::string cookie_consent;
-    std::string lingos_sid;
+    std::string cookies;
+    std::string exercise_id;
+    std::string current_question_id;
+    std::string current_question;
 
-    std::string quiz_id;
-    std::string file_to_get_answer_from = "25503";
-    std::string answer_destination;
-
-    json data;
-
-    std::vector<std::string> quizes;
+    std::vector<std::string> v_wordsets;
 };

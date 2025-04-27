@@ -96,7 +96,7 @@ void CurlHandler::GetQnA()
             curl_slist_free_all(headers);
 
             curl_easy_cleanup(curl);
-            this->QnA.merge_patch(ParseData(readBuffer));
+            QnA.merge_patch(ParseData(readBuffer));
      
             curl_global_cleanup();
             }
@@ -137,8 +137,12 @@ void CurlHandler::GetCurrentQnAID()
         }
         json_response = json::parse(readBuffer);
         //std::cout << json_response.dump() << std::endl << std::endl;
-        this->current_question_id = json_response["exercise"]["identifier"].dump();
-        this->current_question = json_response["exercise"]["translation"];
+        current_question_id = json_response.value("exercise", nlohmann::json::object())
+                                         .value("identifier", nlohmann::json(""))
+                                         .dump();
+
+        current_question = json_response.value("exercise", nlohmann::json::object())
+                                      .value("translation", nlohmann::json(""));
         //std::cout << "Question ID: " << current_question_id << std::endl;
         //std::cout << "Question: " << current_question << std::endl;
 

@@ -108,7 +108,7 @@ void CurlHandler::GetCurrentQnAID()
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
-    json json_temp;
+    json json_response;
 
     // Inicjalizacja cURL
     curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -135,9 +135,10 @@ void CurlHandler::GetCurrentQnAID()
         } else {
             //std::cout << "Odpowiedź serwera: " << readBuffer << std::endl;
         }
-        json_temp = json::parse(readBuffer);
-        this->current_question_id = json_temp["exercise"]["identifier"].dump();
-        this->current_question = json_temp["exercise"]["translation"];
+        json_response = json::parse(readBuffer);
+        //std::cout << json_response.dump() << std::endl << std::endl;
+        this->current_question_id = json_response["exercise"]["identifier"].dump();
+        this->current_question = json_response["exercise"]["translation"];
         //std::cout << "Question ID: " << current_question_id << std::endl;
         //std::cout << "Question: " << current_question << std::endl;
 
@@ -157,7 +158,6 @@ void CurlHandler::SendAnswer()
 
     std::string request_raw_json = "{\"answer\":" + QnA[current_question].dump() + "}";
 
-
     if(curl) {
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, ("Cookie: " + this->cookies).c_str());
@@ -175,6 +175,12 @@ void CurlHandler::SendAnswer()
             std::cout << "Response: " << response << std::endl;
         } else {
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+        }
+
+        json json_repsonse = json::parse(response);
+        if (json_repsonse["details"]["cnt"] == 20)
+        {
+            SendAnswer();
         }
 
         curl_slist_free_all(headers);

@@ -12,7 +12,7 @@ int main()
     curl.GetQnA();
 
     //std::cout << curl.QnA.dump();
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 21; i++)
     {
         curl.GetCurrentQnAID();
         curl.SendAnswer();

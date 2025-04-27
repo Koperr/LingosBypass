@@ -1,15 +1,3 @@
-HTTP/2 200 
-x-powered-by: PHP/8.2.4
-expires: Thu, 19 Nov 1981 08:52:00 GMT
-cache-control: no-store, no-cache, must-revalidate
-pragma: no-cache
-vary: Accept-Encoding,User-Agent
-access-control-allow-origin: *
-content-type: application/json
-date: Thu, 05 Dec 2024 21:33:19 GMT
-server: Apache/2
-
-{"status":"error"}
 
 // To mi zwraca caly json z ktorego musze pobrac identifier i go wkleic do nastepnego curla
 curl -X POST https://lingos.pl/s/exercise/0,0,25503 \
@@ -18,7 +6,6 @@ curl -X POST https://lingos.pl/s/exercise/0,0,25503 \
 curl -i -v -X POST https://lingos.pl/s/answer/246992731 \
   -H "Cookie:	lingos_sid=apq11l35ncc7kuenaksn8tbtic; autologin=gWq2ipDOm2RbZopvz8fu5ZFaWPwk%2FH22sTKgGOorOxE%3D%3AieVM60bQBFMyroZsgXySFpk5MK%2Fs2F%2FDn9F5O5HyJW8%3D; CookieConsent={stamp:%27f+7ywpRuvGmFIujhI+oEbPugblwcsBmNcpD/7RUUNZKavIMY97rzhQ==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:false%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1745620490943%2Cregion:%27pl%27}" \
   -d '{"answer":"repetitive job"}'
-
 
 
 curl https://lingos.pl/student-confirmed/wordset/89624 \

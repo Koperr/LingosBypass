@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(lingos_passer)
+project(LingosBypass)
 
 set(CMAKE_BUILD Debug)
 
@@ -13,37 +13,19 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${FullOutputDir}/static libs")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${FullOutputDir}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${FullOutputDir}")
 
-add_executable(lingos_passer ${source_files})
+add_executable(LingosBypass ${source_files})
 
 find_package(GnuTLS REQUIRED)
 find_package(CURL REQUIRED)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # macOS
     message(STATUS "Configuring for macOS")
-    target_include_directories(lingos_passer PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/libs/libhttpserver/src
-        /opt/homebrew/include)
-    link_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/libs/libhttpserver/lib
-        /opt/homebrew/lib)
-    target_link_libraries(lingos_passer 
-        /opt/homebrew/lib/libhttpserver.a 
-        /System/Volumes/Data/opt/homebrew/lib/libmicrohttpd.a
+    target_link_libraries(LingosBypass
         GnuTLS::GnuTLS
         CURL::libcurl)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
     message(STATUS "Configuring for Linux")
-    target_include_directories(lingos_passer PUBLIC 
-        ${CMAKE_CURRENT_SOURCE_DIR}/libs/libhttpserver/src
-        /usr/local/include)
-    link_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/libs/libhttpserver/lib
-        /usr/local/lib)
-    target_link_libraries(lingos_passer 
-        /usr/lib/x86_64-linux-gnu/libmicrohttpd.a 
-        /usr/local/lib/libhttpserver.a 
-        microhttpd 
-        httpserver
+    target_link_libraries(LingosBypass 
         CURL::libcurl)
 else()
     message(FATAL_ERROR "Unsupported system: ${CMAKE_SYSTEM_NAME}")
@@ -51,4 +33,4 @@ endif()
 
 
 
-target_include_directories(lingos_passer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+target_include_directories(LingosBypass PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)

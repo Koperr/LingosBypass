@@ -21,6 +21,7 @@ public:
     void GetCurrentQnAID();
     void SendAnswer();
 
+
     json QnA;
 private:
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp);
@@ -29,8 +30,8 @@ private:
 
     std::string cookies;
     std::string exercise_id;
-    std::string current_question_id;
     std::string current_question;
+    std::string current_question_id;
 
     std::vector<std::string> v_wordsets;
 };

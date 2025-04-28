@@ -20,7 +20,7 @@ size_t CurlHandler::WriteCallback(void* contents, size_t size, size_t nmemb, std
 
 json CurlHandler::ParseData(const std::string& input)
 {
-    json j;
+    json json_QnA;
 
     size_t question_start_pos = 0;
     size_t question_end_pos;
@@ -40,7 +40,6 @@ json CurlHandler::ParseData(const std::string& input)
         if(question_end_pos == std::string::npos) {  break;  }
 
         std::string question = input.substr(question_start_pos, question_end_pos - question_start_pos);
-        //std::cout << question << std::endl;
         
         // Finding answer to the question
         trans_start_pos = input.find(trans_start, trans_start_pos);
@@ -50,12 +49,11 @@ json CurlHandler::ParseData(const std::string& input)
         if(trans_end_pos == std::string::npos) {  break;  }
 
         std::string answer = input.substr(trans_start_pos, trans_end_pos - trans_start_pos);
-        //std::cout << answer << std::endl;
         
-        j[answer] = question;
+        json_QnA[answer] = question;
     }
 
-    return j;
+    return json_QnA;
 }
 
 
@@ -67,7 +65,6 @@ void CurlHandler::GetQnA()
         CURLcode res;
         std::string readBuffer;
 
-        // Inicjalizacja cURL
         curl_global_init(CURL_GLOBAL_DEFAULT);
         curl = curl_easy_init();
         if (curl) 
@@ -81,14 +78,12 @@ void CurlHandler::GetQnA()
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
-            // Wysłanie żądania
             res = curl_easy_perform(curl);
 
-            // Sprawdzenie odpowiedzi
             if (res != CURLE_OK) {
                 std::cerr << "(GetData()) cURL error: " << curl_easy_strerror(res) << std::endl;
             } else {
-                //std::cout << "Odpowiedź serwera: " << readBuffer << std::endl;
+                //std::cout << "Server response: " << readBuffer << std::endl;
             }
 
             ParseData(readBuffer);
@@ -110,7 +105,6 @@ void CurlHandler::GetCurrentQnAID()
     std::string readBuffer;
     json json_response;
 
-    // Inicjalizacja cURL
     curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
     
@@ -133,18 +127,15 @@ void CurlHandler::GetCurrentQnAID()
         if (res != CURLE_OK) {
             std::cerr << "cURL error: " << curl_easy_strerror(res) << std::endl;
         } else {
-            //std::cout << "Odpowiedź serwera: " << readBuffer << std::endl;
+            //std::cout << "Server response: " << readBuffer << std::endl;
         }
         json_response = json::parse(readBuffer);
-        //std::cout << json_response.dump() << std::endl << std::endl;
         current_question_id = json_response.value("exercise", nlohmann::json::object())
                                          .value("identifier", nlohmann::json(""))
                                          .dump();
 
         current_question = json_response.value("exercise", nlohmann::json::object())
                                       .value("translation", nlohmann::json(""));
-        //std::cout << "Question ID: " << current_question_id << std::endl;
-        //std::cout << "Question: " << current_question << std::endl;
 
         curl_slist_free_all(headers);
 

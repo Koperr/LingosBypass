@@ -26,7 +26,7 @@ int main()
         curl.SendAnswer();
         
 
-        usleep(0.1 * 1000000); // for testing progress bar only
+        //usleep(0.1 * 1000000); // for testing progress bar only
 
         std::cout << "[";
         int pos = barWidth * progress;

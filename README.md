@@ -5,15 +5,17 @@ Copying, using, modifying, or distributing any part of this project without the 
 
 # Build
 ## Windows
-**install Linux**
+> install Linux
 
 ## Linux
-``` sh scripts/setupCMake.sh
+```
+sh scripts/setupCMake.sh
 sh scripts/compilse.sh
 sh scripts/run.sh
 ```
 ## MacOS
-``` sh scripts/setupCMake.sh
+``` 
+sh scripts/setupCMake.sh
 sh scripts/compilse.sh
 sh scripts/run.sh
 ```

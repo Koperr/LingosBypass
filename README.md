@@ -21,4 +21,4 @@ sh scripts/run.sh
 ```
 
 ## Note: in order to work, you need paste your own login cookies, wordset IDs, exercise ID and request count
-## in first few lines of src/main.cpp
+in first few lines of src/main.cpp

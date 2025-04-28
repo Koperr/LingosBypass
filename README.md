@@ -5,13 +5,13 @@
 ## Linux
 ```
 sh scripts/setupCMake.sh
-sh scripts/compilse.sh
+sh scripts/compile.sh
 sh scripts/run.sh
 ```
 ## MacOS
 ``` 
 sh scripts/setupCMake.sh
-sh scripts/compilse.sh
+sh scripts/compile.sh
 sh scripts/run.sh
 ```
 

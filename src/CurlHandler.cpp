@@ -167,16 +167,11 @@ void CurlHandler::SendAnswer()
 
         res = curl_easy_perform(curl);
         if (res == CURLE_OK) {
-            std::cout << "Response: " << response << std::endl;
+            //std::cout << "Response: " << response << std::endl;
         } else {
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
         }
 
-        json json_repsonse = json::parse(response);
-        if (json_repsonse["details"]["cnt"] == 20)
-        {
-            SendAnswer();
-        }
 
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);

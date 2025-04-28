@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(LingosBypass)
+project(lingos_passer)
 
 set(CMAKE_BUILD Debug)
 
@@ -20,11 +20,19 @@ find_package(CURL REQUIRED)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # macOS
     message(STATUS "Configuring for macOS")
-    target_link_libraries(LingosBypass
+    target_include_directories(LingosBypass PUBLIC 
+        /opt/homebrew/include)
+    link_directories(
+        /opt/homebrew/lib)
+    target_link_libraries(LingosBypass 
         GnuTLS::GnuTLS
         CURL::libcurl)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
     message(STATUS "Configuring for Linux")
+    target_include_directories(LingosBypass PUBLIC 
+        /usr/local/include)
+    link_directories(
+        /usr/local/lib)
     target_link_libraries(LingosBypass 
         CURL::libcurl)
 else()

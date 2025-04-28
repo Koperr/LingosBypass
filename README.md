@@ -1,3 +1,4 @@
+This program sends http requests with answers to questions on lingos.pl to save your time
 # Build
 ## Windows
 > install Linux

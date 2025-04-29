@@ -130,12 +130,28 @@ void CurlHandler::GetCurrentQnAID()
             //std::cout << "Server response: " << readBuffer << std::endl;
         }
         json_response = json::parse(readBuffer);
+
+
         current_question_id = json_response.value("exercise", nlohmann::json::object())
-                                         .value("identifier", nlohmann::json(""))
-                                         .dump();
+                                        .value("identifier", nlohmann::json(""))
+                                        .dump();
 
         current_question = json_response.value("exercise", nlohmann::json::object())
-                                      .value("translation", nlohmann::json(""));
+                                        .value("translation", nlohmann::json(""));  
+
+        question_type = json_response.value("exercise", nlohmann::json::object())
+                                      .value("type", nlohmann::json(""));
+        if(question_type == "new_teacher")
+        {
+            answer_end_point = "teacher-new";
+            SendAnswer();
+            GetCurrentQnAID();
+        }
+        else if(question_type == "flashcard")
+        {
+            answer_end_point = "answer";
+        }
+
 
         curl_slist_free_all(headers);
 
@@ -157,7 +173,7 @@ void CurlHandler::SendAnswer()
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, ("Cookie: " + this->cookies).c_str());
 
-        curl_easy_setopt(curl, CURLOPT_URL, ("https://lingos.pl/s/answer/" + current_question_id).c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, ("https://lingos.pl/s/" + answer_end_point + "/" + current_question_id).c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request_raw_json.c_str());
         

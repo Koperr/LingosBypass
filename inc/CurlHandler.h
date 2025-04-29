@@ -31,6 +31,9 @@ private:
     std::string exercise_id;
     std::string current_question;
     std::string current_question_id;
+    std::string question_type;
+    std::string new_teacher_id;
+    std::string answer_end_point;
 
 
     std::vector<std::string> v_wordsets;

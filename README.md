@@ -1,8 +1,7 @@
 This program sends http requests with answers to questions on lingos.pl to save your time
 You may need to update libs/json:
 ```
-rm -rf libs/json
-git clone https://github.com/nlohmann/json.git libs/json
+sh scripts/installJson.sh
 ```
 ###
 # Compile and run

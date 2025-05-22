@@ -18,7 +18,7 @@ add_executable(LingosBypass ${source_files})
 find_package(GnuTLS REQUIRED)
 find_package(CURL REQUIRED)
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # macOS
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # MacOS
     message(STATUS "Configuring for macOS")
     target_include_directories(LingosBypass PUBLIC 
         /opt/homebrew/include)
@@ -35,6 +35,14 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
         /usr/local/lib)
     target_link_libraries(LingosBypass 
         CURL::libcurl)
+        elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Android") # Android
+        message(STATUS "Configuring for Android (Termux)")
+        target_include_directories(LingosBypass PUBLIC 
+            /data/data/com.termux/files/usr/include)
+        link_directories(
+            /data/data/com.termux/files/usr/lib)
+        target_link_libraries(LingosBypass 
+            curl)
 else()
     message(FATAL_ERROR "Unsupported system: ${CMAKE_SYSTEM_NAME}")
 endif()

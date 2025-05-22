@@ -11,6 +11,9 @@ if [ "$OS" = "Darwin" ]; then
 elif [ "$OS" = "Linux" ]; then
     # Linux
     EXEC_PATH="bin/Linux/"
+elif [ "$OS" = "Android" ]; then
+    # Linux
+    EXEC_PATH="bin/Android/"
 else
     echo "Unsupported OS: $OS"
     exit 1

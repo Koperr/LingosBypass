@@ -14,27 +14,6 @@ int main()
     curl.AddWordSet("89624"); // Add a wordset to get sentences from (you can add more than 1 set of sentences), (https://lingos.pl/student-confirmed/wordset/[WORDSET ID])
     curl.GetQnA();
 
-    CurlHandler Marcel("cookie: lingos_sid=p4odd2bp4cni1m7vj1plqs2su5; CookieConsent={stamp:%27z1xJ1mu/uGZwXA/rBIkuCKtuUW+cJ5CvRoAjDwNSpTYMHgEbMVJztQ==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1745872540821%2Cregion:%27pl%27}; _ga=GA1.1.415176137.1745872539; autologin=iYyztUENwrpdlL%2BY1n5RcZOo9l%2FUq5CZ27tQG81QqOc%3D%3AwBbYbf6K75P2GP9fuadZ6oJFPPubVAF7O4nHl57GNmc%3D; _ga_67KDMLGTNZ=GS1.1.1745872538.1.1.1745873267.0.0.0; __eoi=ID=d9d3ccc5c9d3b82b:T=1745872557:RT=1745873429:S=AA-AfjY2ZI1LdPjJJ8zDvGWxzh85");
-    Marcel.SetExercise("25503");
-    Marcel.AddWordSet("89624");
-    Marcel.GetQnA();
-
-    //CurlHandler Edek("");
-    //Edek.SetExercise("25503");
-    //Edek.AddWordSet("89624");
-    //Edek.GetQnA();
-
-    //CurlHandler Seweryn("");
-    //Seweryn.SetExercise("25503");
-    //Seweryn.AddWordSet("89624");
-    //Seweryn.GetQnA();
-
-    // BŁAŻEJ
-    //CurlHandler Frajer("cookie: lingos_sid=mr8c6u3q20ut13v4522k1ptbgr; CookieConsent={stamp:%27k5DABeWdSLEzrtDg3A+yijIhUT4SUtMVFcRzQ3CytrSk4xLXd0Ib9g==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1745960036617%2Cregion:%27pl%27}; _ga=GA1.1.1051018077.1745960124; autologin=R0hfxBxd0xn2v0wctW7OKyS0oeKx%2BArcX7MxnY1bFmU%3D%3ApM9xZ1V9J%2FFzvFH3O2BW1KposWGa7Bgu1ajXxReijkQ%3D; _ga_67KDMLGTNZ=GS1.1.1745960123.1.1.1745960252.0.0.0");
-    //Frajer.SetExercise("25503");
-    //Frajer.AddWordSet("89624");
-    //Frajer.GetQnA();
-
     int request_count = 100; // lessons * questions (in my case 5 lessons per day * 20 questions each) PLUS you may add some
     // if you didnt "unlock" current wordset questions (if you are doing them first time)
     ////////////////////////////////////////////
@@ -44,21 +23,9 @@ int main()
     int barWidth = 30;
     for(int i = 0; i < request_count; i++)
     {
-        //curl.GetCurrentQnAID();
-        //curl.SendAnswer();
+        curl.GetCurrentQnAID();
+        curl.SendAnswer();
         
-        Marcel.GetCurrentQnAID();
-        Marcel.SendAnswer();
-
-        //Edek.GetCurrentQnAID();
-        //dek.SendAnswer();
-
-        //Seweryn.GetCurrentQnAID();
-        //Seweryn.SendAnswer();
-
-        //Frajer.GetCurrentQnAID();
-        //Frajer.SendAnswer();
-
         //usleep(0.1 * 1000000); // for testing progress bar only
 
         std::cout << "[";

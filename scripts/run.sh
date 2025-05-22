@@ -14,14 +14,11 @@ elif [ "$OS" = "Linux" ]; then
 elif [ "$OS" = "Android" ]; then
     # Linux
     EXEC_PATH="bin/Android/"
-elif [ "$OS" = "Linux" ]; then
-    # Linux
-    EXEC_PATH="bin/Android/"
 else
     echo "Unsupported OS: $OS"
     exit 1
 fi
 
-cd $EXEC_PATH
+cd $EXEC_PATH || cd "bin/Android/"
 sudo ./LingosBypass
 cd ../..

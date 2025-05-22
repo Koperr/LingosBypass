@@ -21,7 +21,8 @@ find_package(CURL REQUIRED)
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # MacOS
     message(STATUS "Configuring for macOS")
     target_include_directories(LingosBypass PUBLIC 
-        /opt/homebrew/include)
+        /opt/homebrew/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/libs/json/include)
     link_directories(
         /opt/homebrew/lib)
     target_link_libraries(LingosBypass 
@@ -30,7 +31,8 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin") # MacOS
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
     message(STATUS "Configuring for Linux")
     target_include_directories(LingosBypass PUBLIC 
-        /usr/local/include)
+        /usr/local/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/libs/json/include)
     link_directories(
         /usr/local/lib)
     target_link_libraries(LingosBypass 
@@ -38,7 +40,8 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
         elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Android") # Android
         message(STATUS "Configuring for Android (Termux)")
         target_include_directories(LingosBypass PUBLIC 
-            /data/data/com.termux/files/usr/include)
+            /data/data/com.termux/files/usr/include
+            ${CMAKE_CURRENT_SOURCE_DIR}/libs/json/include)
         link_directories(
             /data/data/com.termux/files/usr/lib)
         target_link_libraries(LingosBypass 

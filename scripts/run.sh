@@ -19,8 +19,8 @@ else
     exit 1
 fi
 
-if cd $EXEC_PATH; then
-elif cd bin/Android/RelWithDebInfo; then
+if cd $EXEC_PATH
+elif cd bin/Android/RelWithDebInfo
 else
     echo "Couldn't find any directory"
     exit 1

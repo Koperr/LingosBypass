@@ -19,8 +19,15 @@ else
     exit 1
 fi
 
+if cd $EXEC_PATH; then
+    echo "Succesfuly got into $EXEC_PATH"
+elif cd bin/Android/RelWithDebInfo; then
+    echo "Succesfuly got into bin/Android/RelWithDebInfo"
+else
+    echo "Couldn't find any directory"
+    exit 1
+fi
 
-cd $EXEC_PATH || cd bin/Android/RelWithDebInfo
-chmod +x LingosBypass
+#cd $EXEC_PATH || cd bin/Android/RelWithDebInfo
 sudo ./LingosBypass
 cd ../..

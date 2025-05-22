@@ -12,13 +12,15 @@ elif [ "$OS" = "Linux" ]; then
     # Linux
     EXEC_PATH="bin/Linux/"
 elif [ "$OS" = "Android" ]; then
-    # Linux
+    # Android
     EXEC_PATH="bin/Android/"
 else
     echo "Unsupported OS: $OS"
     exit 1
 fi
 
-cd $EXEC_PATH || cd "bin/Android/RelWithDebInfo"
+
+cd $EXEC_PATH || cd bin/Android/RelWithDebInfo
+chmod +x LingosBypass
 sudo ./LingosBypass
 cd ../..

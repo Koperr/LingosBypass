@@ -11,8 +11,8 @@ int main()
     // You can find your login cookies by inspecting site > Network tab > reload site > click on whichever request on list > Headers > Request Headers
     CurlHandler curl("Cookie:	lingos_sid=apq11l35ncc7kuenaksn8tbtic; autologin=gWq2ipDOm2RbZopvz8fu5ZFaWPwk%2FH22sTKgGOorOxE%3D%3AieVM60bQBFMyroZsgXySFpk5MK%2Fs2F%2FDn9F5O5HyJW8%3D; CookieConsent={stamp:%27f+7ywpRuvGmFIujhI+oEbPugblwcsBmNcpD/7RUUNZKavIMY97rzhQ==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:false%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1745620490943%2Cregion:%27pl%27}");
     curl.SetExercise("25503"); // Set an exercize to do (https://lingos.pl/s/lesson/0,0,[EXERCISE ID])
-    curl.AddWordSet("89624"); // Add a wordset to get sentences from (you can add more than 1 set of sentences), (https://lingos.pl/student-confirmed/wordset/[WORDSET ID])
-    curl.GetQnA();
+    curl.AddWordSet("92035"); // Add a wordset to get sentences from (you can add more than 1 set of sentences), (https://lingos.pl/student-confirmed/wordset/[WORDSET ID])
+    curl.GetQnA();  
 
     int request_count = 100; // lessons * questions (in my case 5 lessons per day * 20 questions each) PLUS you may add some
     // if you didnt "unlock" current wordset questions (if you are doing them first time)

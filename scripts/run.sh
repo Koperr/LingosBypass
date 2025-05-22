@@ -28,6 +28,15 @@ else
     exit 1
 fi
 
+if [ -x ./LingosBypass ]; then
+    echo "Plik jest wykonywalny, uruchamiam..."
+    ./LingosBypass
+else
+    echo "Plik nie jest wykonywalny. Nadaję uprawnienia i uruchamiam..."
+    chmod +x ./LingosBypass
+    ./LingosBypass
+fi
+
 #cd $EXEC_PATH || cd bin/Android/RelWithDebInfo
-sudo ./LingosBypass
+#sudo ./LingosBypass
 cd ../..

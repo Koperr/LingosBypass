@@ -20,23 +20,17 @@ else
 fi
 
 if cd $EXEC_PATH; then
-    echo "Succesfuly got into $EXEC_PATH"
 elif cd bin/Android/RelWithDebInfo; then
-    echo "Succesfuly got into bin/Android/RelWithDebInfo"
 else
     echo "Couldn't find any directory"
     exit 1
 fi
 
 if [ -x ./LingosBypass ]; then
-    echo "Plik jest wykonywalny, uruchamiam..."
     ./LingosBypass
 else
-    echo "Plik nie jest wykonywalny. Nadaję uprawnienia i uruchamiam..."
     chmod +x ./LingosBypass
     ./LingosBypass
 fi
 
-#cd $EXEC_PATH || cd bin/Android/RelWithDebInfo
-#sudo ./LingosBypass
 cd ../..

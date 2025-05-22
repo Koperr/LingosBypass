@@ -19,6 +19,6 @@ else
     exit 1
 fi
 
-cd $EXEC_PATH || cd "bin/Android/"
+cd $EXEC_PATH || cd "bin/Android/RelWithDebInfo"
 sudo ./LingosBypass
 cd ../..

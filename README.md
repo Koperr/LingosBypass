@@ -8,14 +8,8 @@ sh scripts/installJson.sh
 ## Windows
 > install Linux
 
-## Linux
+## Linux/MacOS
 ```
-sh scripts/setupCMake.sh
-sh scripts/compile.sh
-sh scripts/run.sh
-```
-## MacOS
-``` 
 sh scripts/setupCMake.sh
 sh scripts/compile.sh
 sh scripts/run.sh
